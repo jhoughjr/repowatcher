@@ -9,9 +9,9 @@ func routes(_ app: Application) throws {
         "Hello, world!"
     }
     
-    app.post("postEvents") { req in
+    app.post("postEvents") { req async-> Response in
         let bod = "\(req.body)"
         req.logger.info("\(bod)")
-        return bod
+        return Response(status: .ok)
     }
 }
