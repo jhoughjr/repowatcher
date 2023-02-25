@@ -10,8 +10,19 @@ func routes(_ app: Application) throws {
     }
     
     app.post("postEvents") { req async-> Response in
-        let bod = "\(req.body)"
-        req.logger.info("\(bod)")
+        guard let bod = req.body.data else {
+            return Response(status: .badRequest)
+        }
+        
+        do {
+            let event = try JSONDecoder().decode(WebHookPayload.self,
+                                                 from: bod)
+            req.logger.info("\(event)")
+            
+        }
+        catch {
+            req.logger.error("\(error)")
+        }
         return Response(status: .ok)
     }
 }
