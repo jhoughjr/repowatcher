@@ -136,9 +136,9 @@ struct WebHookPayload:Codable  {
     
     struct Repository:Codable {
         var id:Int
-        var nodeID:String
+        var node_id:String
         var name:String
-        var fullName:String
+        var full_name:String
         var pivate:Bool
         var owner:Owner
         var html_url: String
