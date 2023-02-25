@@ -14,7 +14,7 @@ struct WebHookPayload:Codable  {
     var ref:String
     var before:String
     var after:String
-    var respository:Repository
+    var repository:Repository
     var pusher:Pusher
     var sender:Sender
     var created:Bool
