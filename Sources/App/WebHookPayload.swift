@@ -359,9 +359,29 @@ struct WebHookPayload:Codable  {
        "site_admin": false
      **/
     struct Sender:Codable {
+        enum CodingKeys: String, CodingKey {
+            case login
+            case id
+            case nodeID = "node_id"
+            case avatarURL
+            case gravatarID
+            case url
+            case htmlURL
+            case followersURL
+            case followingURL
+            case gistsURL
+            case starredURL
+            case subscriptionsURL
+            case organizationsURL
+            case reposURL
+            case eventsURL
+            case receivedEvevntsURL
+            case type
+            case siteAdmin
+        }
         let login:String
         let id:Int
-        let node_ID:String
+        let nodeID:String
         let avatarURL:String
         let gravatarID:String
         let url:String
