@@ -42,21 +42,24 @@ class ConfigurationFile {
         if logger != nil {
             logger!.info("loading \(path)")
         }
-            let res = io.streamFile(at: path)
-            if let chunk = res.body.buffer {
-                eatChunk(chunk: chunk)
-            }
+        let res = io.streamFile(at: path)
+        if let chunk = res.body.buffer {
+            eatChunk(chunk: chunk)
+        }else {
+            logger?.error("no chunks to eat at \(path)")
+        }
             
     }
     
     func eatChunk(chunk:ByteBuffer) {
+        logger?.info("decoding")
         do {
             let configs = try JSONDecoder().decode([Config].self,
                                                    from: Data(buffer: chunk,
                                                               byteTransferStrategy: .automatic))
             self.configs = configs
             
-            self.logger?.info("loaded \(self.configs)")
+            self.logger?.info("decoded \(self.configs)")
             
         }
         catch {
