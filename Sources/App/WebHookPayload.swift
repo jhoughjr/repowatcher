@@ -39,7 +39,7 @@ struct WebHookPayload:Codable  {
     var baseRef:String?
     var compare:String
     var commits:[Commit]
-    var headCommit:[Commit]
+    var headCommit:Commit
     
     
     /**   "
