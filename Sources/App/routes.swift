@@ -16,7 +16,10 @@ func routes(_ app: Application) throws {
 //            req.logger.info("will decode \(String(describing:s))")
             let event = try JSONDecoder().decode(WebHookPayload.self,
                                                  from: bod)
-            req.logger.info("\(event)")
+            EventManager(file: ConfigurationFile(path: "",
+                                                 logger: req.logger),
+                         logger: req.logger)
+            .handle(event)
             
         }
         catch {
