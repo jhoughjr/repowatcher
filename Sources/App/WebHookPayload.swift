@@ -304,7 +304,7 @@ struct WebHookPayload:Codable  {
         var archived:Bool
         var disabled:Bool
         var open_issues_count:Int
-        var license:String?
+        var license:License?
         var allow_forking:Bool
         var is_template:Bool
         var web_commit_signoff_required: Bool
@@ -494,5 +494,22 @@ struct WebHookPayload:Codable  {
         let added:[String]
         let removed:[String]
         let modified:[String]
+    }
+    
+    /**
+     "license": {
+           "key": "mit",
+           "name": "MIT License",
+           "spdx_id": "MIT",
+           "url": "https://api.github.com/licenses/mit",
+           "node_id": "MDc6TGljZW5zZTEz"
+         }
+     */
+    struct License:Codable {
+        var key:String
+        var name:String
+        var spdx_id:String
+        var url:String
+        var node_id:String
     }
 }

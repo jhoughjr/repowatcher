@@ -7,7 +7,20 @@
 
 import Foundation
 
+/**
+ [
+    { "url":"",
+     "script": "git pull;sudo docker compose build;sudo docker compose up "},
+    ...
+ 
+ */
 struct ConfigurationFile:Codable {
     
-    var filesDir:String
+    struct Config:Codable {
+        let url:String
+        let script:String
+    }
+    
+    var configs = [Config]()
+    
 }

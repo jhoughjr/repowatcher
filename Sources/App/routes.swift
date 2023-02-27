@@ -2,7 +2,7 @@ import Vapor
 
 func routes(_ app: Application) throws {
     
-    app.post("postEvents") { req async-> Response in
+    app.post("postEvents") { req async -> Response in
         
         guard let bod = req.body.data else {
             req.logger.error("no body data")
