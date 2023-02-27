@@ -23,10 +23,10 @@ class EventManager {
     }
     
     func handle(_ event:WebHookPayload) {
-        
+        logger?.info("handling \(event)")
         configs?.filter {$0.url == event.repository.url}
                 .forEach { config in
-                        
+                    logger?.info("running \(config.script)")
             if !config.script.isEmpty {
                 DispatchQueue.main.async {
                     do {
