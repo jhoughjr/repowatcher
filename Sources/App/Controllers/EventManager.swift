@@ -7,24 +7,25 @@
 
 import Foundation
 import Vapor
+
 class EventManager {
-    static let shared = EventManager(file: nil, logger: nil)
+    typealias Config = ConfigurationFile.Config
+    
+    static let shared = EventManager(configs: nil, logger: nil)
     
     private var logger:Logger?
     
-    var file:ConfigurationFile?
+    var configs:[Config]?
     
-    init(file:ConfigurationFile?, logger:Logger?) {
-        self.file = file
+    init(configs:[Config]?, logger:Logger?) {
+        self.configs = configs
         self.logger = logger
     }
     
     func handle(_ event:WebHookPayload) {
-        guard let file = file else {
-            return
-        }
-        file.configs.filter {$0.url == event.repository.url}
-                    .forEach { config in
+        
+        configs?.filter {$0.url == event.repository.url}
+                .forEach { config in
                         
             if !config.script.isEmpty {
                 DispatchQueue.main.async {
@@ -48,13 +49,9 @@ class EventManager {
         let foo = args.map{$0.replacingOccurrences(of: "\r", with: "\n")}
         proc.arguments = foo
         proc.standardOutput = outPipe
-//        proc.launch()
-//        proc.waitUntilExit()
-
         try proc.run()
         let data = outPipe.fileHandleForReading.readDataToEndOfFile()
         let res =  String(data: data, encoding: .utf8) ?? "ERROR"
-        //should trim?
         return res
     }
 }
