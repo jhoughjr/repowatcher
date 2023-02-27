@@ -462,7 +462,7 @@ struct WebHookPayload:Codable  {
             case timestamp
             case url
             case author
-            case commiter
+            case committer
             case added
             case removed
             case modified
@@ -474,7 +474,7 @@ struct WebHookPayload:Codable  {
         let timestamp:String
         let url:String
         let author:Author
-        let commiter:Committer
+        let committer:Committer
         let added:[String]
         let removed:[String]
         let modified:[String]
