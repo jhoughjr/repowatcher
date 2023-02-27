@@ -10,7 +10,23 @@ import Foundation
 import Vapor
 
 struct WebHookPayload:Codable  {
-   
+
+    enum CodingKeys: String, CodingKey {
+        case ref
+        case before
+        case after
+        case repository
+        case pusher
+        case sender
+        case created
+        case deleted
+        case forced
+        case baseRef
+        case compare
+        case commits
+        case headCommit = "head_commit"
+    }
+    
     var ref:String
     var before:String
     var after:String
