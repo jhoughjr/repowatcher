@@ -15,38 +15,55 @@ import Vapor
     ...
  
  */
-struct ConfigurationFile {
+import NIO
+class ConfigurationFile {
     
     struct Config:Codable {
         let url:String
         let script:String
     }
     
+    var path:String = ""
     var configs = [Config]()
-    private var logger:Logger? = nil
     
-    init(path:String, logger:Logger?) {
+    private var logger:Logger? = nil
+    private var io:FileIO
+    
+    init(fileIO:FileIO,
+         path:String,
+         logger:Logger?) {
+        self.io = fileIO
         self.logger = logger
+        self.path = path
+    }
+    
+    func load() async {
         
         if logger != nil {
             logger!.info("loading \(path)")
         }
-        if let loadedData = FileManager.default.contents(atPath: path) {
-            do {
-                let configs = try JSONDecoder().decode([Config].self,
-                                                       from: loadedData)
-                self.configs = configs
-                
-                self.logger?.info("loaded \(self.configs)")
-                
+            let res = io.streamFile(at: path)
+            if let chunk = res.body.buffer {
+                eatChunk(chunk: chunk)
             }
-            catch {
-                if logger != nil {
-                    logger!.error("\(error)")
-                }
+            
+    }
+    
+    func eatChunk(chunk:ByteBuffer) {
+        do {
+            let configs = try JSONDecoder().decode([Config].self,
+                                                   from: Data(buffer: chunk,
+                                                              byteTransferStrategy: .automatic))
+            self.configs = configs
+            
+            self.logger?.info("loaded \(self.configs)")
+            
+        }
+        catch {
+            if self.logger != nil {
+                self.logger!.error("\(error)")
             }
         }
     }
-    
     
 }
