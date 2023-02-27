@@ -375,7 +375,7 @@ struct WebHookPayload:Codable  {
             case organizationsURL = "organizations_url"
             case reposURL = "repos_url"
             case eventsURL = "events_url"
-            case receivedEvevntsURL = "recieved_events_url"
+            case receivedEvevntsURL = "received_events_url"
             case type
             case siteAdmin = "site_admin"
         }
