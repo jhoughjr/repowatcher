@@ -15,6 +15,10 @@ func routes(_ app: Application) throws {
         }
         
         do {
+            let s = String(data:Data(buffer: bod,
+                                     byteTransferStrategy: .noCopy),encoding:.utf8)
+            
+            req.logger.info("will decode \(String(describing:s))")
             let event = try JSONDecoder().decode(WebHookPayload.self,
                                                  from: bod)
             req.logger.info("\(event)")
