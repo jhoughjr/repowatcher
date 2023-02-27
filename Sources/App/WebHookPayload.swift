@@ -363,21 +363,21 @@ struct WebHookPayload:Codable  {
             case login
             case id
             case nodeID = "node_id"
-            case avatarURL
-            case gravatarID
+            case avatarURL = "avatar_url"
+            case gravatarID = "gravatar_id"
             case url
-            case htmlURL
-            case followersURL
-            case followingURL
-            case gistsURL
-            case starredURL
-            case subscriptionsURL
-            case organizationsURL
-            case reposURL
-            case eventsURL
-            case receivedEvevntsURL
+            case htmlURL = "html_url"
+            case followersURL = "followers_url"
+            case followingURL = "following_url"
+            case gistsURL = "gists_url"
+            case starredURL = "starred_url"
+            case subscriptionsURL = "subscriptions_url"
+            case organizationsURL = "organizations_url"
+            case reposURL = "repos_url"
+            case eventsURL = "events_url"
+            case receivedEvevntsURL = "recieved_events_url"
             case type
-            case siteAdmin
+            case siteAdmin = "site_admin"
         }
         let login:String
         let id:Int
@@ -454,6 +454,19 @@ struct WebHookPayload:Codable  {
      ]
      */
     struct Commit:Codable {
+        enum CodingKeys: String, CodingKey {
+            case id
+            case treeID = "tree_id"
+            case distinct
+            case message
+            case timestamp
+            case url
+            case author
+            case commiter
+            case added
+            case removed
+            case modified
+        }
         let id:String
         let treeID:String
         let distinct:Bool
