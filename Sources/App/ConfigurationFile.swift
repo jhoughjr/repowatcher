@@ -42,12 +42,15 @@ class ConfigurationFile {
         if logger != nil {
             logger!.info("loading \(path)")
         }
-        let res = io.streamFile(at: path)
-        if let chunk = res.body.buffer {
-            eatChunk(chunk: chunk)
-        }else {
-            logger?.error("no chunks to eat at \(path)")
+        
+        do {
+            let res =  try await io.collectFile(at: path)
+            eatChunk(chunk: res)
         }
+        catch {
+            logger?.error("\(error)")
+        }
+       
             
     }
     

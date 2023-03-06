@@ -17,7 +17,6 @@ func routes(_ app: Application) throws {
             let event = try JSONDecoder().decode(WebHookPayload.self,
                                                  from: bod)
             let workingDir = app.directory.resourcesDirectory
-            let path = "../../Resources/"
 
             let file = ConfigurationFile(fileIO:req.fileio,
                                          path: workingDir + "watched.json",
