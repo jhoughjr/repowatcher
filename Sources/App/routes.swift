@@ -18,7 +18,7 @@ func routes(_ app: Application) throws {
                                                  from: bod)
             
             let file = ConfigurationFile(fileIO:req.fileio,
-                                         path: "/Public/watched.json",
+                                         path: "./Public/watched.json",
                                          logger: req.logger)
             await file.load()
             EventManager(configs: file.configs,
