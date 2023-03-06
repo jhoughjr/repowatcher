@@ -16,9 +16,10 @@ func routes(_ app: Application) throws {
 //            req.logger.info("will decode \(String(describing:s))")
             let event = try JSONDecoder().decode(WebHookPayload.self,
                                                  from: bod)
-            
+            let path = app.directory.workingDirectory + "Resources/"
+
             let file = ConfigurationFile(fileIO:req.fileio,
-                                         path: "./Public/watched.json",
+                                         path: path + "watched.json",
                                          logger: req.logger)
             await file.load()
             EventManager(configs: file.configs,
