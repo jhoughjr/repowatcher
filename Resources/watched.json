@@ -1,2 +1,6 @@
-
-[{"https://github.com/jhoughjr/repowatcher":"git pull; sudo docker compose build;sudo docker compose up"},]
+[
+ {
+  "url" :"https://github.com/jhoughjr/repowatcher",
+  "script":"git pull;sudo docker compose build;sudo docker compose up"
+ },
+]
