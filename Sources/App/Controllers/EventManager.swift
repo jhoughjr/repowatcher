@@ -20,6 +20,7 @@ class EventManager {
     init(configs:[Config]?, logger:Logger?) {
         self.configs = configs
         self.logger = logger
+        self.logger?.info("configs: \(configs)")
     }
     
     func handle(_ event:WebHookPayload) {
@@ -39,6 +40,7 @@ class EventManager {
                 }
             }
         }
+        logger?.info("Done.")
     }
     
      func runCommand(cmd: String,
