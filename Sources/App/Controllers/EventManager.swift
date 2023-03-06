@@ -7,6 +7,8 @@
 
 import Foundation
 import Vapor
+import Queues
+
 
 class EventManager {
     typealias Config = ConfigurationFile.Config
@@ -16,6 +18,7 @@ class EventManager {
     private var logger:Logger?
     
     var configs:[Config]?
+    var queue:Queue?
     
     init(configs:[Config]?, logger:Logger?) {
         self.configs = configs
@@ -25,14 +28,15 @@ class EventManager {
     
     func handle(_ event:WebHookPayload) {
         logger?.info("handling \(event)")
+        
         configs?.filter {$0.url == event.repository.url}
                 .forEach { config in
-                    logger?.info("running \(config.script)")
+                    
             if !config.script.isEmpty {
-                DispatchQueue.main.async {
+                Task {
                     do {
-                        let result = try self.runCommand(cmd: config.script, args: [""])
-                        self.logger?.info("result \(result)")
+                        try await queue?.dispatch(ScriptJob.self,
+                                                  .init(script:config.script))
                     }
                     catch {
                         self.logger?.error("\(error.localizedDescription)")
