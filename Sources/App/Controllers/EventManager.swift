@@ -35,6 +35,7 @@ class EventManager {
             if !config.script.isEmpty {
                 Task {
                     do {
+                        logger?.info("dispatching \(config.script)")
                         try await queue?.dispatch(ScriptJob.self,
                                                   .init(script:config.script))
                     }
