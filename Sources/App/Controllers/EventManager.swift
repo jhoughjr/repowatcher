@@ -47,17 +47,4 @@ class EventManager {
         logger?.info("Done.")
     }
     
-     func runCommand(cmd: String,
-                     args: [String]) throws -> String {
-        let outPipe = Pipe()
-        let proc = Process()
-        proc.launchPath = cmd
-        let foo = args.map{$0.replacingOccurrences(of: "\r", with: "\n")}
-        proc.arguments = foo
-        proc.standardOutput = outPipe
-        try proc.run()
-        let data = outPipe.fileHandleForReading.readDataToEndOfFile()
-        let res =  String(data: data, encoding: .utf8) ?? "ERROR"
-        return res
-    }
 }
