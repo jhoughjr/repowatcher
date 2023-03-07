@@ -7,24 +7,21 @@
 
 import Foundation
 import Vapor
-import Queues
-
+import SwiftShell
 
 class EventManager {
     typealias Config = ConfigurationFile.Config
     
-    static let shared = EventManager(configs: nil, logger: nil, queue: nil)
+    static let shared = EventManager(configs: nil, logger: nil)
     
     private var logger:Logger?
     
     var configs:[Config]?
-    var queue:Queue?
     
     init(configs:[Config]?,
-         logger:Logger?, queue:Queue?) {
+         logger:Logger?) {
         self.configs = configs
         self.logger = logger
-        self.queue = queue
         self.logger?.info("configs: \(configs)")
     }
     
@@ -38,9 +35,8 @@ class EventManager {
                 Task {
                     do {
                         logger?.info("dispatching \(config.script)")
-                        try await queue?.dispatch(ScriptJob.self,
-                                                  .init(script:config.script,
-                                                        launchPath: config.localPath))
+                        shell(launchPath: config.localPath,
+                              config.script)
                         logger?.info("dispatched.")
                     }
                     catch {
@@ -52,4 +48,20 @@ class EventManager {
         logger?.info("Done.")
     }
     
+    @discardableResult
+    func shell(launchPath:String, _ args: String) -> String {
+        
+        let shell = Shell()
+
+        do {
+            // Shell is implemented with `callAsFunction`.
+            let chDir = try shell("cd \"\(launchPath)\"", arguments: [])
+            print(chDir)
+            let run = try shell(args)
+            return run
+        } catch {
+            print(error)
+        }
+        return ""
+    }
 }
