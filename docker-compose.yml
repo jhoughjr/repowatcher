@@ -36,10 +36,10 @@ services:
       - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
     ports:
       - '6379:6379'
-  queues:
-    image: watcher:latest
-    environment:
-      <<: *shared_environment
-    command: ["queues"]
-    depends_on:
-      - redis
+#  queues:
+#    image: watcher:latest
+#    environment:
+#      <<: *shared_environment
+#    command: ["queues"]
+#    depends_on:
+#      - redis
