@@ -41,3 +41,5 @@ services:
     environment:
       <<: *shared_environment
     command: ["queues"]
+    depends_on:
+      - redis

@@ -18,7 +18,7 @@ struct ScriptJob: AsyncJob {
     typealias Payload = Script
 
     func dequeue(_ context: QueueContext, _ payload: Script) async throws {
-        context.logger.info("running \(payload.script)")
+        context.logger.info("script job running \(payload.script)")
         do {
             _ = try self.runCommand(cmd: payload.script,
                                     args: [])
