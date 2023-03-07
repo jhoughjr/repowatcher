@@ -42,7 +42,7 @@ class EventManager {
                         logger?.info("dispatched.")
                     }
                     catch {
-                        self.logger?.error("\(error.localizedDescription)")
+                        logger?.error("\(error.localizedDescription)")
                     }
                 }
             }

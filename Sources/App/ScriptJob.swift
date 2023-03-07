@@ -11,27 +11,34 @@ import Queues
 
 struct ScriptJob: AsyncJob {
     
-    struct Script:Codable {
+    struct JobInfo:Codable {
         var script:String
+        var launchPath:String
     }
     
-    typealias Payload = Script
+    typealias Payload = JobInfo
 
-    func dequeue(_ context: QueueContext, _ payload: Script) async throws {
+    func dequeue(_ context: QueueContext,
+                 _ payload: Payload) async throws {
         context.logger.info("script job running \(payload.script)")
-        do {
-            _ = try self.runCommand(cmd: payload.script,
-                                    args: [])
+            let setPath = "cd \(payload.launchPath);"
+            _ = shell(setPath + payload.script)
             context.logger.info("done")
-        }
-        catch {
-            context.logger.error("\(error.localizedDescription)")
-        }
     }
 
-    func error(_ context: QueueContext, _ error: Error, _ payload: Script) async throws {
+    func error(_ context: QueueContext, _ error: Error, _ payload: Payload) async throws {
         // If you don't want to handle errors you can simply return. You can also omit this function entirely.
         context.logger.error("\(error)")
+    }
+    
+    @discardableResult
+    func shell(_ args: String...) -> Int32 {
+        let task = Process()
+        task.launchPath =
+        task.arguments = args
+        task.launch()
+        task.waitUntilExit()
+        return task.terminationStatus
     }
     
     func runCommand(cmd: String,
