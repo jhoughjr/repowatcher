@@ -12,6 +12,8 @@ let package = Package(
                  from: "4.0.0"),
         .package(url: "https://github.com/vapor/queues-redis-driver.git",
                  from: "1.0.0"),
+        .package(url: "https://github.com/taji-taji/swift-shell.git", from: "1.0.0")
+
 
     ],
     targets: [
@@ -19,8 +21,8 @@ let package = Package(
             name: "App",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
-                .product(name: "QueuesRedisDriver", package: "queues-redis-driver")
-
+                .product(name: "QueuesRedisDriver", package: "queues-redis-driver"),
+                .product(name: "SwiftShell", package: "swift-shell"),
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of
@@ -29,7 +31,8 @@ let package = Package(
                 .unsafeFlags(["-cross-module-optimization"], .when(configuration: .release))
             ]
         ),
-        .executableTarget(name: "Run", dependencies: [.target(name: "App")]),
+        .executableTarget(name: "Run",
+                          dependencies: [.target(name: "App")]),
         .testTarget(name: "AppTests", dependencies: [
             .target(name: "App"),
             .product(name: "XCTVapor", package: "vapor"),

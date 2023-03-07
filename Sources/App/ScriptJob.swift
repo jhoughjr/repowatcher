@@ -8,6 +8,7 @@
 import Vapor
 import Foundation
 import Queues
+import SwiftShell
 
 struct ScriptJob: AsyncJob {
     
@@ -23,7 +24,7 @@ struct ScriptJob: AsyncJob {
         context.logger.info("script job running \(payload.script)")
             _ = shell(launchPath:payload.launchPath,
                       payload.script)
-            context.logger.info("done")
+            context.logger.info("done running.")
     }
 
     func error(_ context: QueueContext, _ error: Error, _ payload: Payload) async throws {
@@ -32,13 +33,19 @@ struct ScriptJob: AsyncJob {
     }
     
     @discardableResult
-    func shell(launchPath:String, _ args: String...) -> Int32 {
-        let task = Process()
+    func shell(launchPath:String, _ args: String) -> String {
         
-        task.launchPath = launchPath
-        task.arguments = args
-        task.launch()
-        task.waitUntilExit()
-        return task.terminationStatus
+        let shell = Shell()
+
+        do {
+            // Shell is implemented with `callAsFunction`.
+            let chDir = try shell("cd", arguments: [launchPath])
+            print(chDir)
+            let run = try shell(args)
+            return run
+        } catch {
+            print(error)
+        }
+        return ""
     }
 }
