@@ -39,6 +39,7 @@ class EventManager {
                         logger?.info("dispatching \(config.script)")
                         try await queue?.dispatch(ScriptJob.self,
                                                   .init(script:config.script))
+                        logger?.info("dispatched.")
                     }
                     catch {
                         self.logger?.error("\(error.localizedDescription)")
