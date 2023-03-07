@@ -21,6 +21,7 @@ class ConfigurationFile {
     struct Config:Codable {
         let url:String
         let script:String
+        let localPath:String
     }
     
     var path:String = ""

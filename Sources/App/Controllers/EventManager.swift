@@ -20,7 +20,8 @@ class EventManager {
     var configs:[Config]?
     var queue:Queue?
     
-    init(configs:[Config]?, logger:Logger?, queue:Queue?) {
+    init(configs:[Config]?,
+         logger:Logger?, queue:Queue?) {
         self.configs = configs
         self.logger = logger
         self.queue = queue
@@ -38,7 +39,8 @@ class EventManager {
                     do {
                         logger?.info("dispatching \(config.script)")
                         try await queue?.dispatch(ScriptJob.self,
-                                                  .init(script:config.script))
+                                                  .init(script:config.script,
+                                                        launchPath: config.localPath))
                         logger?.info("dispatched.")
                     }
                     catch {
