@@ -1,6 +1,7 @@
 [
  {
   "url" :"https://github.com/jhoughjr/repowatcher",
-  "script":"git pull;sudo docker compose build;sudo docker compose up"
+  "script":"git pull;sudo docker compose build;sudo docker compose up",
+  "localPath":"/home/jimmyhoughjr/repowatcher"
  },
 ]
