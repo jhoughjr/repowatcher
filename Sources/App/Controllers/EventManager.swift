@@ -13,16 +13,17 @@ import Queues
 class EventManager {
     typealias Config = ConfigurationFile.Config
     
-    static let shared = EventManager(configs: nil, logger: nil)
+    static let shared = EventManager(configs: nil, logger: nil, queue: nil)
     
     private var logger:Logger?
     
     var configs:[Config]?
     var queue:Queue?
     
-    init(configs:[Config]?, logger:Logger?) {
+    init(configs:[Config]?, logger:Logger?, queue:Queue?) {
         self.configs = configs
         self.logger = logger
+        self.queue = queue
         self.logger?.info("configs: \(configs)")
     }
     
