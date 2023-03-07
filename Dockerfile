@@ -23,9 +23,7 @@ RUN swift package resolve
 COPY . .
 
 # Build everything, with optimizations
-RUN swift build -c debug
-
-#--static-swift-stdlib
+RUN swift build -c release --static-swift-stdlib
 
 # Switch to the staging area
 WORKDIR /staging
