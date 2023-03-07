@@ -39,7 +39,7 @@ struct ScriptJob: AsyncJob {
 
         do {
             // Shell is implemented with `callAsFunction`.
-            let chDir = try shell("cd", arguments: [launchPath])
+            let chDir = try shell("cd \"\(launchPath)\"", arguments: [])
             print(chDir)
             let run = try shell(args)
             return run
