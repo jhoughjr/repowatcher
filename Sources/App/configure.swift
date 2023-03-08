@@ -7,6 +7,11 @@ public func configure(_ app: Application) throws {
     let file = FileMiddleware(publicDirectory: app.directory.publicDirectory)
     app.middleware.use(file)
     
+    app.logger.info("serving files @ \(app.directory.publicDirectory)")
+    try app.queues.use(.redis(url: "redis://redis:6379"))
+    app.queues.add(ScriptJob())
+    app.logger.info("queues configured/")
+
     app.http.server.configuration.port = 9090
 
     // register routes
