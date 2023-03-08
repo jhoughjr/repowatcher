@@ -8,6 +8,7 @@
 import Foundation
 import Vapor
 import SwiftShell
+import Queues
 
 class EventManager {
     typealias Config = ConfigurationFile.Config
@@ -15,6 +16,7 @@ class EventManager {
     static let shared = EventManager(configs: nil, logger: nil)
     
     private var logger:Logger?
+    var queue:Queue?
     
     var configs:[Config]?
     
@@ -22,7 +24,7 @@ class EventManager {
          logger:Logger?) {
         self.configs = configs
         self.logger = logger
-        self.logger?.info("configs: \(configs)")
+        self.logger?.info("configs: \(String(describing: configs))")
     }
     
     func handle(_ event:WebHookPayload) {
@@ -35,7 +37,9 @@ class EventManager {
                 Task {
                     do {
                         logger?.info("dispatching \(config.script)")
-                        
+                        try await queue?.dispatch(ScriptJob.self,
+                                                  ScriptJob.JobInfo(launchPath: config.localPath,
+                                                          script: config.script))
                         logger?.info("dispatched.")
                     }
                     catch {
