@@ -35,8 +35,7 @@ class EventManager {
                 Task {
                     do {
                         logger?.info("dispatching \(config.script)")
-                        shell(launchPath: config.localPath,
-                              config.script)
+                        
                         logger?.info("dispatched.")
                     }
                     catch {
@@ -48,20 +47,5 @@ class EventManager {
         logger?.info("Done.")
     }
     
-    @discardableResult
-    func shell(launchPath:String, _ args: String) -> String {
-        
-        let shell = Shell()
-
-        do {
-            // Shell is implemented with `callAsFunction`.
-            let chDir = try shell("cd \"\(launchPath)\"", arguments: [])
-            print(chDir)
-            let run = try shell(args)
-            return run
-        } catch {
-            print(error)
-        }
-        return ""
-    }
+   
 }
