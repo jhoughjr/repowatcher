@@ -27,6 +27,7 @@ struct ScriptJob: AsyncJob {
 
     func error(_ context: QueueContext, _ error: Error, _ payload: Payload) async throws {
         // If you don't want to handle errors you can simply return. You can also omit this function entirely.
+        context.logger.error("\(error)")
     }
     
     @discardableResult
@@ -38,11 +39,11 @@ struct ScriptJob: AsyncJob {
         do {
             // Shell is implemented with `callAsFunction`.
             let chDir = try shell("cd \"\(launchPath)\"", arguments: [])
-            print(chDir)
+            context.logger.info("\(chDir)")
             let run = try shell(args)
             return run
         } catch {
-            print(error)
+            context.logger.error("\(error)")
         }
         return ""
     }

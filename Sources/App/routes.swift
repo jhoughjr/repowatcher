@@ -23,7 +23,8 @@ func routes(_ app: Application) throws {
                                          logger: req.logger)
             await file.load()
             EventManager(configs: file.configs,
-                         logger: req.logger)
+                         logger: req.logger,
+                         queue:req.queue)
             .handle(event)
             
         }
