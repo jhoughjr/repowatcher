@@ -1,9 +1,9 @@
 [
  {
   "url" :"https://github.com/jhoughjr/repowatcher",
-  "un":"jimmyhoughjr",
-  "pw":""
-  "key":""
+  "username":"jimmyhoughjr",
+  "password":"",
+  "publicKeyPath":""
  },
 ]
 
