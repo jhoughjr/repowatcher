@@ -11,53 +11,46 @@ import Vapor
 import AsyncAlgorithms
 
 class SSHManager {
-    static let shared = SSHManager(nil, logger: nil)
+    static let shared = SSHManager(logger: nil)
     
-    var client:SSHClient? = nil
-    var config:SSHConfigurationFile.Config? = nil
+    var clients = [String:SSHClient]()
     var logger:Logger? = nil
-    var buffer:ByteBuffer? = nil
     
-    init(_ config:SSHConfigurationFile.Config?,
-         logger:Logger?) {
-        self.config = config
+    init(logger:Logger?) {
         self.logger = logger
-        Task {
-            self.logger?.info("connecting \(config) ...")
-            await startClient()
-        }
     }
     
-    func startClient() async {
+    func startClient(config:SSHConfigurationFile.Config) async {
         do {
             logger?.info("starting client")
-            client = try await SSHClient.connect(
-                host: config?.url ?? "",
-                authenticationMethod: .passwordBased(username: config?.username ?? "",
-                                                     password: config?.password ?? ""),
+            let client = try await SSHClient.connect(
+                host: config.url,
+                authenticationMethod: .passwordBased(username: config.username,
+                                                     password: config.password),
                 hostKeyValidator: .acceptAnything(), // Please use another validator if at all possible, it's insecure
                 reconnect: .never
             )
+            client.onDisconnect {
+                self.logger?.warning("disconnected")
+                self.clients[config.url] = nil
+            }
+            clients[config.url] = client
         }
         catch {
             logger?.error("\(error)")
         }
 
-        client?.onDisconnect {
-            self.logger?.warning("disconnected")
-        }
+       
     }
     
-    func run(_ command:String) async {
+    func run(_ command:String,
+             with config:SSHConfigurationFile.Config) async {
+        if clients[config.url] == nil {
+            await startClient(config: config)
+        }
         do {
-            logger?.info("running \(command) @ \(config?.url) as \(config?.username)")
-            buffer = try await client?.executeCommand(command)
-            if let b = buffer {
-                let str =  String(buffer: b)
-                str.enumerateLines { line, stop in
-                    self.logger?.info("\(line)")
-                }
-            }
+            let buffer = try await clients[config.url]?.executeCommand(command)
+            logger?.info("completed")
         }
         catch {
             self.logger?.error("\(error)")

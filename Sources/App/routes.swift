@@ -9,20 +9,41 @@ func routes(_ app: Application) throws {
             return Response(status: .badRequest)
         }
         
+        // decode
+        
         do {
-//            let s = String(data:Data(buffer: bod,
-//                                     byteTransferStrategy: .noCopy),encoding:.utf8)
-//
-//            req.logger.info("will decode \(String(describing:s))")
+            
             let event = try JSONDecoder().decode(WebHookPayload.self,
                                                  from: bod)
+            
             let workingDir = app.directory.resourcesDirectory
 
-            let file = RepoConfigurationFile(fileIO:req.fileio,
+            let repoFile = RepoConfigurationFile(fileIO:req.fileio,
                                          path: workingDir + "watched.json",
                                          logger: req.logger)
-            await file.load()
-            EventManager(configs: file.configs,
+            await repoFile.load()
+            
+            let sshFile = SSHConfigurationFile(fileIO: req.fileio,
+                                               path: workingDir + "ssh.json",
+                                               logger: req.logger)
+            await sshFile.load()
+            
+            guard let repoConfig = repoFile.configs.first(where:{ f in
+                f.url == event.repository.url
+            })
+            else {
+                return Response(status: .ok)
+            }
+            
+            guard let sshConfig = sshFile.configs.first(where:{ f in
+                f.url == event.repository.url
+            })
+            else {
+                return Response(status: .failedDependency)
+            }
+            
+            EventManager(configs:[EventManager.EventConfig(repoConfig: repoConfig,
+                                                           sshConfig: sshConfig)],
                          logger: req.logger,
                          queue:req.queue)
             .handle(event)
