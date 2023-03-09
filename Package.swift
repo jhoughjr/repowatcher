@@ -12,7 +12,10 @@ let package = Package(
                  from: "4.0.0"),
         .package(url: "https://github.com/vapor/queues-redis-driver.git",
                  from: "1.0.0"),
-        .package(url: "https://github.com/taji-taji/swift-shell.git", from: "1.0.0")
+        .package(url: "https://github.com/orlandos-nl/citadel.git",
+                 from: "0.4.0"),
+        .package(url: "https://github.com/apple/swift-async-algorithms", from: "0.0.0"),
+
 
 
     ],
@@ -22,7 +25,9 @@ let package = Package(
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "QueuesRedisDriver", package: "queues-redis-driver"),
-                .product(name: "SwiftShell", package: "swift-shell"),
+                .product(name: "Citadel", package: "citadel"),
+                .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
+
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of
