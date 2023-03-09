@@ -8,6 +8,7 @@
 import Foundation
 import Citadel
 import Vapor
+import AsyncAlgorithms
 
 class SSHManager {
     static let shared = SSHManager(nil, logger: nil)
@@ -29,9 +30,11 @@ class SSHManager {
     
     func startClient() async {
         do {
+            logger?.info("starting client")
             client = try await SSHClient.connect(
-                host: "example.com",
-                authenticationMethod: .passwordBased(username: "joannis", password: "s3cr3t"),
+                host: config?.url ?? "",
+                authenticationMethod: .passwordBased(username: config?.username ?? "",
+                                                     password: config?.password ?? ""),
                 hostKeyValidator: .acceptAnything(), // Please use another validator if at all possible, it's insecure
                 reconnect: .never
             )
@@ -47,9 +50,14 @@ class SSHManager {
     
     func run(_ command:String) async {
         do {
+            logger?.info("running \(command) @ \(config?.url) as \(config?.username)")
             buffer = try await client?.executeCommand(command)
-            logger?.info("\(buffer)")
-            
+            if let b = buffer {
+                let str =  String(buffer: b)
+                str.enumerateLines { line, stop in
+                    self.logger?.info("\(line)")
+                }
+            }
         }
         catch {
             self.logger?.error("\(error)")
