@@ -7,7 +7,6 @@
 
 import Foundation
 import Vapor
-
 /**
  [
     { "url":"",
@@ -16,7 +15,7 @@ import Vapor
  
  */
 import NIO
-class ConfigurationFile {
+class RepoConfigurationFile {
     
     struct Config:Codable {
         let url:String

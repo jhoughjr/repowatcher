@@ -18,7 +18,7 @@ func routes(_ app: Application) throws {
                                                  from: bod)
             let workingDir = app.directory.resourcesDirectory
 
-            let file = ConfigurationFile(fileIO:req.fileio,
+            let file = RepoConfigurationFile(fileIO:req.fileio,
                                          path: workingDir + "watched.json",
                                          logger: req.logger)
             await file.load()

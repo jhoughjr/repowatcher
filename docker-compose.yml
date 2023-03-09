@@ -40,8 +40,6 @@ services:
     image: watcher:latest
     environment:
       <<: *shared_environment
-    volumes:
-      - ~/:/
     command: ["queues","--log", "info"]
     depends_on:
       - redis

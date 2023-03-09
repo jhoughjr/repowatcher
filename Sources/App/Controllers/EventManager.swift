@@ -7,25 +7,31 @@
 
 import Foundation
 import Vapor
-import SwiftShell
 import Queues
 
 class EventManager {
-    typealias Config = ConfigurationFile.Config
     
-    static let shared = EventManager(configs: nil, logger: nil, queue:nil)
+    typealias RepoConfig = RepoConfigurationFile.Config
+    typealias SSHConfig = SSHConfigurationFile.Config
+    
+    static let shared = EventManager(configs: nil,
+                                     logger: nil,
+                                     queue:nil)
     
     private var logger:Logger?
+    
     var queue:Queue?
     
-    var configs:[Config]?
+    var configs:[RepoConfig]?
     
-    init(configs:[Config]?,
-         logger:Logger?, queue:Queue?) {
+    init(configs:[RepoConfig]?,
+         logger:Logger?,
+         queue:Queue?) {
         self.configs = configs
         self.logger = logger
         self.queue = queue
         self.logger?.info("configs: \(String(describing: configs))")
+        
     }
     
     func handle(_ event:WebHookPayload) {
