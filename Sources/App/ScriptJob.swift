@@ -20,6 +20,8 @@ struct ScriptJob: AsyncJob {
 
     func dequeue(_ context: QueueContext, _ payload: Payload) async throws {
         context.logger.info("dequeueing...")
+        SSHManager.shared.logger = context.logger
+        
         await SSHManager.shared.run(payload.script, with:payload.sshConfig)
     }
 
