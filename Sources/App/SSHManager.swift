@@ -24,7 +24,7 @@ class SSHManager {
         do {
             logger?.info("starting client")
             let client = try await SSHClient.connect(
-                host: config.url,
+                host: config.host,
                 authenticationMethod: .passwordBased(username: config.username,
                                                      password: config.password),
                 hostKeyValidator: .acceptAnything(), // Please use another validator if at all possible, it's insecure

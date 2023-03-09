@@ -1,6 +1,7 @@
 [
  {
   "url" :"https://github.com/jhoughjr/repowatcher",
+  "host":"pi4.local",
   "username":"jimmyhoughjr",
   "password":"",
   "publicKeyPath":""

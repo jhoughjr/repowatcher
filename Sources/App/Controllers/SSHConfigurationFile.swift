@@ -12,6 +12,7 @@ class SSHConfigurationFile {
     
     struct Config:Codable {
         let url:String
+        let host:String
         let username:String
         let password:String
         let publicKeyPath:String
