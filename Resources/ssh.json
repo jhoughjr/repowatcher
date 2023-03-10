@@ -2,8 +2,8 @@
  {
   "url" :"https://github.com/jhoughjr/repowatcher",
   "host":"192.168.1.117",
-  "username":"jimmyhoughjr",
-  "password":"",
+  "username":"repowatcher",
+  "password":"secret01",
   "publicKeyPath":""
  },
 ]
