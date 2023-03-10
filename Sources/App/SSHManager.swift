@@ -37,7 +37,7 @@ class SSHManager {
             clients[config.url] = client
         }
         catch {
-            logger?.error("\(error)")
+            logger?.error("start client \(error.localizedDescription)")
         }
 
        
@@ -53,7 +53,7 @@ class SSHManager {
             logger?.info("completed")
         }
         catch {
-            self.logger?.error("\(error)")
+            self.logger?.error("run: \(error.localizedDescription)")
         }
     }
 }
