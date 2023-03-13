@@ -12,12 +12,8 @@ let package = Package(
                  from: "4.0.0"),
         .package(url: "https://github.com/vapor/queues-redis-driver.git",
                  from: "1.0.0"),
-        .package(url: "https://github.com/orlandos-nl/citadel.git",
-                 from: "0.4.0"),
-        .package(url: "https://github.com/apple/swift-async-algorithms", from: "0.0.0"),
-
-
-
+//        .package(path: "../Citadel"),
+        .package(url: "https://github.com/orlandos-nl/Citadel.git", branch: "main"),
     ],
     targets: [
         .target(
@@ -26,8 +22,6 @@ let package = Package(
                 .product(name: "Vapor", package: "vapor"),
                 .product(name: "QueuesRedisDriver", package: "queues-redis-driver"),
                 .product(name: "Citadel", package: "citadel"),
-                .product(name: "AsyncAlgorithms", package: "swift-async-algorithms"),
-
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of

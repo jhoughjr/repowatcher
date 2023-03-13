@@ -1,0 +1,7 @@
+[
+{
+    "id":"debug-queues",
+    "redis":"redis:localhost",
+},
+]
+
