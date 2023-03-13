@@ -51,10 +51,12 @@ class SSHManager {
         }
         do {
             
-
+            logger?.info("collecting streams...")
             let streams = try await clients[config.url]?.executeCommandStream(command)
-            var asyncStreams = streams?.makeAsyncIterator()
+            logger?.info("makign interator for streams...")
 
+            var asyncStreams = streams?.makeAsyncIterator()
+            logger?.info("interating streams...")
             while let blob = try await asyncStreams?.next() {
                 switch blob {
                     case .stdout(let stdout):
